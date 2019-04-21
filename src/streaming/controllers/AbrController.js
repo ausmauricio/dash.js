@@ -354,7 +354,7 @@ function AbrController() {
                         //     scheduleController.schedule();
                         // }
                         if (newQuality > oldQuality) {
-                            var newStableBuffer = 1.5 * settings.get().streaming.stableBufferTime;
+                            var newStableBuffer = 1.2 * settings.get().streaming.stableBufferTime;
                             logger.debug('switchRequest.reason : ' + switchRequest.reason);
                             settings.update({streaming: {stableBufferTime: newStableBuffer}});
                         }
