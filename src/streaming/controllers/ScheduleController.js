@@ -200,7 +200,7 @@ function ScheduleController(config) {
                         switchTrack = false;
                     } else {
                         logger.debug('### QUALITY HAS CHANGED ###'); // maurice
-                        logger.debug('### CURRENT TIMER VALUE ' + scheduleTimeout);
+                        logger.debug('### CURRENT TIMER VALUE ###'); // maurice
                         streamProcessor.switchInitData(currentRepresentationInfo.id);
                     }
                     lastInitQuality = currentRepresentationInfo.quality;
