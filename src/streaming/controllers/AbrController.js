@@ -45,6 +45,7 @@ import ThroughputHistory from '../rules/ThroughputHistory';
 import {HTTPRequest} from '../vo/metrics/HTTPRequest';
 import Debug from '../../core/Debug';
 import { checkInteger } from '../utils/SupervisorTools';
+//import ScheduleController from './ScheduleController';
 
 const ABANDON_LOAD = 'abandonload';
 const ALLOW_LOAD = 'allowload';
@@ -176,6 +177,11 @@ function AbrController() {
         if (config.settings) {
             settings = config.settings;
         }
+        //if (config.scheduleController) { // maurice
+        //    logger.debug('--- YES INDEED THERE IS A SCHEDULE CONTROLLER HERE ---');
+        //    scheduleController = config.scheduleController;
+        //    logger.debug('lol ' + scheduleController);
+        //}
     }
 
     function checkConfig() {
@@ -343,6 +349,15 @@ function AbrController() {
 
                 if (newQuality > SwitchRequest.NO_CHANGE && newQuality != oldQuality) {
                     if (abandonmentStateDict[type].state === ALLOW_LOAD || newQuality > oldQuality) {
+                        //  should I make calls to schedule here?
+                        // if (newQuality > oldQuality) {
+                        //     scheduleController.schedule();
+                        // }
+                        if (newQuality > oldQuality) {
+                            var newStableBuffer = 1.5 * settings.get().streaming.stableBufferTime;
+                            logger.debug('switchRequest.reason : ' + switchRequest.reason);
+                            settings.update({streaming: {stableBufferTime: newStableBuffer}});
+                        }
                         changeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequest.reason);
                     }
                 } else if (settings.get().debug.logLevel === Debug.LOG_LEVEL_DEBUG) {

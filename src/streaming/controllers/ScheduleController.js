@@ -184,6 +184,7 @@ function ScheduleController(config) {
         validateExecutedFragmentRequest();
         const isReplacement = replaceRequestArray.length > 0;
         const streamInfo = streamProcessor.getStreamInfo();
+        // maurice
         logger.debug('### 1: buffer ' + bufferResetInProgress + ' isnan ' + isNaN(lastInitQuality) + ' switchtrack ' + switchTrack + ' isrepla ' + isReplacement + ' hastop ' + hasTopQualityChanged(currentRepresentationInfo.mediaInfo.type, streamInfo.id) + 'bufferlevelrule ' + bufferLevelRule.execute(streamProcessor, streamController.isTrackTypePresent(Constants.VIDEO)));
 
         if (bufferResetInProgress || isNaN(lastInitQuality) || switchTrack || isReplacement ||
