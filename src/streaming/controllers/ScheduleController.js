@@ -182,12 +182,15 @@ function ScheduleController(config) {
         }
 
         validateExecutedFragmentRequest();
-
         const isReplacement = replaceRequestArray.length > 0;
         const streamInfo = streamProcessor.getStreamInfo();
+        logger.debug('### 1: buffer ' + bufferResetInProgress + ' isnan ' + isNaN(lastInitQuality) + ' switchtrack ' + switchTrack + ' isrepla ' + isReplacement + ' hastop ' + hasTopQualityChanged(currentRepresentationInfo.mediaInfo.type, streamInfo.id) + 'bufferlevelrule ' + bufferLevelRule.execute(streamProcessor, streamController.isTrackTypePresent(Constants.VIDEO)));
+
         if (bufferResetInProgress || isNaN(lastInitQuality) || switchTrack || isReplacement ||
             hasTopQualityChanged(currentRepresentationInfo.mediaInfo.type, streamInfo.id) ||
             bufferLevelRule.execute(streamProcessor, streamController.isTrackTypePresent(Constants.VIDEO))) {
+
+            logger.debug('### 2: buffer ' + bufferResetInProgress + ' isnan ' + isNaN(lastInitQuality) + ' switchtrack ' + switchTrack + ' isrepla ' + isReplacement + ' hastop ' + hasTopQualityChanged(currentRepresentationInfo.mediaInfo.type, streamInfo.id) + ' bufferlevelrule ' + bufferLevelRule.execute(streamProcessor, streamController.isTrackTypePresent(Constants.VIDEO)));
 
             const getNextFragment = function () {
                 const fragmentController = streamProcessor.getFragmentController();
@@ -230,6 +233,12 @@ function ScheduleController(config) {
                         }
 
                         if (request) {
+
+                            logger.debug('### 3: buffer ' + bufferResetInProgress + ' isnan ' + isNaN(lastInitQuality) + ' switchtrack ' +
+                                            switchTrack + 'isrepla' + isReplacement + 'hastop' +
+                                            hasTopQualityChanged(currentRepresentationInfo.mediaInfo.type, streamInfo.id) +
+                                            ' bufferlevelrule' +
+                                             bufferLevelRule.execute(streamProcessor, streamController.isTrackTypePresent(Constants.VIDEO)));
                             logger.debug('Next fragment request url is ' + request.url);
                             fragmentModel.executeRequest(request);
                         } else { // Use case - Playing at the bleeding live edge and frag is not available yet. Cycle back around.
