@@ -199,7 +199,7 @@ function ScheduleController(config) {
                         streamProcessor.switchInitData(currentRepresentationInfo.id, bufferResetInProgress);
                         switchTrack = false;
                     } else {
-                        logger.debug('### QUALITY HAS CHANGED ###');
+                        logger.debug('### QUALITY HAS CHANGED ###'); // maurice
                         streamProcessor.switchInitData(currentRepresentationInfo.id);
                     }
                     lastInitQuality = currentRepresentationInfo.quality;
