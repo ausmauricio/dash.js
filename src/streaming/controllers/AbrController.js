@@ -83,6 +83,8 @@ function AbrController() {
         dashMetrics,
         settings;
 
+    let changeCounter = 3;
+
     function setup() {
         logger = debug.getLogger(instance);
         resetInitialSettings();
@@ -354,11 +356,18 @@ function AbrController() {
                         //     scheduleController.schedule();
                         // }
                         if (newQuality > oldQuality) {
-                            var newStableBuffer = 1.2 * settings.get().streaming.stableBufferTime;
-                            logger.debug('switchRequest.reason : ' + switchRequest.reason);
-                            settings.update({streaming: {stableBufferTime: newStableBuffer}});
+                            if (changeCounter === 3) {
+                                var newStableBuffer = 1.2 * settings.get().streaming.stableBufferTime;
+                                settings.update({streaming: {stableBufferTime: newStableBuffer}});
+                            }
+                            else if (changeCounter === 0) {
+                                logger.debug('switchRequest.reason : ' + switchRequest.reason);
+                                changeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequest.reason);
+                                changeCounter = 3;
+                            }
+                            changeCounter =  changeCounter - 1;
                         }
-                        changeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequest.reason);
+                        //changeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequest.reason);
                     }
                 } else if (settings.get().debug.logLevel === Debug.LOG_LEVEL_DEBUG) {
                     const bufferLevel = dashMetrics.getCurrentBufferLevel(type, true);
