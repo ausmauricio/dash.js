@@ -83,7 +83,7 @@ function AbrController() {
         dashMetrics,
         settings;
 
-    let changeCounter = 3;
+    //let changeCounter = 3;
 
     function setup() {
         logger = debug.getLogger(instance);
@@ -348,26 +348,38 @@ function AbrController() {
                 }
 
                 switchHistoryDict[type].push({oldValue: oldQuality, newValue: newQuality});
+                let bitratesToBuffer = {0: 12, 1: 12, 2: 12, 3: 12, 4: 13, 5: 14, 6: 15, 7: 16, 8: 18};
 
                 if (newQuality > SwitchRequest.NO_CHANGE && newQuality != oldQuality) {
                     if (abandonmentStateDict[type].state === ALLOW_LOAD || newQuality > oldQuality) {
+
+                        // maurice
                         //  should I make calls to schedule here?
                         // if (newQuality > oldQuality) {
                         //     scheduleController.schedule();
                         // }
-                        if (newQuality > oldQuality) {
-                            if (changeCounter === 3) {
-                                var newStableBuffer = 1.2 * settings.get().streaming.stableBufferTime;
-                                settings.update({streaming: {stableBufferTime: newStableBuffer}});
-                            }
-                            else if (changeCounter === 0) {
-                                logger.debug('switchRequest.reason : ' + switchRequest.reason);
-                                changeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequest.reason);
-                                changeCounter = 3;
-                            }
-                            changeCounter =  changeCounter - 1;
-                        }
+                        // if (changeCounter === 3) {
                         //changeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequest.reason);
+                        //}
+                        //else if (changeCounter === 0) {
+                        //    logger.debug('switchRequest.reason : ' + switchRequest.rea son);
+                        //    changeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequest.reason);
+                        //    changeCounter = 3;
+                        //}
+                        //changeCounter =  changeCounter - 1;
+                        //settings.get().streaming.stableBufferTime;
+
+                        if (newQuality > oldQuality) {
+                            var newStableBuffer = bitratesToBuffer[newQuality];
+                            settings.update({streaming: {stableBufferTime: newStableBuffer}});
+
+                            setTimeout(function () {
+                                changeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequest.reason);
+                            },2000);
+
+                        } else {
+                            changeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequest.reason);
+                        }
                     }
                 } else if (settings.get().debug.logLevel === Debug.LOG_LEVEL_DEBUG) {
                     const bufferLevel = dashMetrics.getCurrentBufferLevel(type, true);
