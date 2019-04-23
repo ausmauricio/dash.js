@@ -451,7 +451,7 @@ function ProtectionController(config) {
                     protectionModel.selectKeySystem(keySystemAccess);
                 }
             };
-            var onKeySystemSelected = function (event) {
+            var onKeySystemSelected = function (event) { /* jshint ignore:line */
                 eventBus.off(events.INTERNAL_KEY_SYSTEM_SELECTED, onKeySystemSelected, self);
                 eventBus.off(events.KEY_SYSTEM_ACCESS_COMPLETE, onKeySystemAccessComplete, self);
                 if (!event.error) {
@@ -491,7 +491,7 @@ function ProtectionController(config) {
                         eventBus.trigger(events.KEY_SYSTEM_SELECTED, {data: null, error: new DashJSError(ProtectionErrors.KEY_SYSTEM_ACCESS_DENIED_ERROR_CODE, ProtectionErrors.KEY_SYSTEM_ACCESS_DENIED_ERROR_MESSAGE + 'Error selecting key system! -- ' + event.error)});
                     }
                 }
-            };
+            }; /* jshint ignore:line */
             eventBus.on(events.INTERNAL_KEY_SYSTEM_SELECTED, onKeySystemSelected, self);
             eventBus.on(events.KEY_SYSTEM_ACCESS_COMPLETE, onKeySystemAccessComplete, self);
             protectionModel.requestKeySystemAccess(requestedKeySystems);

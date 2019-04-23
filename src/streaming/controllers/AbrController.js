@@ -315,15 +315,15 @@ function AbrController() {
         return !!settings.get().streaming.abr.autoSwitchBitrate[type];
     }
 
-    function resolveChangeQuality(milisecs) { // jshint ignore:line
-        return new Promise(r => setTimeout(r, milisecs)); // jshint ignore:line
-    } // jshint ignore:line
+    function resolveChangeQuality(milisecs) {
+        return new Promise(r => setTimeout(r, milisecs));
+    }
 
-    async function asyncChangeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequestreason) { // jshint ignore:line
-        await resolveChangeQuality(2000); // jshint ignore:line
-        logger.debug('#######33another teste########3');
-        //changeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequestreason); // jshint ignore:line
-    } // jshint ignore:line
+    async function asyncChangeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequestreason) {
+        await resolveChangeQuality(2000);
+        //logger.debug('#######33another teste########3');
+        changeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequestreason);
+    }
 
     function checkPlaybackQuality(type) {
         if (type  && streamProcessorDict && streamProcessorDict[type]) {
@@ -383,7 +383,7 @@ function AbrController() {
                             var newStableBuffer = bitratesToBuffer[newQuality];
                             settings.update({streaming: {stableBufferTime: newStableBuffer}});
 
-                            asyncChangeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequest.reason); // jshint ignore:line
+                            asyncChangeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequest.reason);
                             logger.debug('########## ASYNC CHANGE QUALITY EXECUTED ###########');
 
                         } else {

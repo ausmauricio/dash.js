@@ -1,5 +1,5 @@
 {
-    "esversion": 9,
+    "esversion": 8,
     "noarg": true,
     "latedef": "nofunc",
     "undef": true,
