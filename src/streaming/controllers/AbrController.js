@@ -315,6 +315,15 @@ function AbrController() {
         return !!settings.get().streaming.abr.autoSwitchBitrate[type];
     }
 
+    function resolveChangeQuality(milisecs) { // jshint ignore:line
+        return new Promise(r => setTimeout(r, milisecs)); // jshint ignore:line
+    } // jshint ignore:line
+
+    async function asyncChangeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequestreason) { // jshint ignore:line
+        await resolveChangeQuality(2000); // jshint ignore:line
+        changeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequestreason); // jshint ignore:line
+    } // jshint ignore:line
+
     function checkPlaybackQuality(type) {
         if (type  && streamProcessorDict && streamProcessorDict[type]) {
             const streamInfo = streamProcessorDict[type].getStreamInfo();
@@ -373,9 +382,8 @@ function AbrController() {
                             var newStableBuffer = bitratesToBuffer[newQuality];
                             settings.update({streaming: {stableBufferTime: newStableBuffer}});
 
-                            setTimeout(function () {
-                                changeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequest.reason);
-                            },2000);
+                            asyncChangeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequest.reason); // jshint ignore:line
+                            logger.debug('########## ASYNC CHANGE QUALITY EXECUTED ###########');
 
                         } else {
                             changeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequest.reason);
@@ -410,6 +418,7 @@ function AbrController() {
                 logger.info('AbrController (' + type + ') switch from ' + oldQuality + ' to ' + newQuality + '/' + topQualityIdx + ' (buffer: ' + bufferLevel + ') ' + (reason ? JSON.stringify(reason) : '.'));
             }
             setQualityFor(type, id, newQuality);
+            logger.debug('--- EVENTS.QUALITY_CHANGE_REQUESTED ABOUT TO BE TRIGGERED ----');
             eventBus.trigger(Events.QUALITY_CHANGE_REQUESTED, {mediaType: type, streamInfo: streamInfo, oldQuality: oldQuality, newQuality: newQuality, reason: reason});
             const bitrate = throughputHistory.getAverageThroughput(type);
             if (!isNaN(bitrate)) {
