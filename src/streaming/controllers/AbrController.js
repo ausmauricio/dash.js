@@ -321,7 +321,7 @@ function AbrController() {
 
     async function asyncChangeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequestreason) {
         await resolveChangeQuality(2000);
-        logger.debug('#######33another teste########3');
+        logger.debug('####### another test ########');
         changeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequestreason);
     }
 
