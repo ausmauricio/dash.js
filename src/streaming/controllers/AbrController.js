@@ -321,7 +321,7 @@ function AbrController() {
 
     async function asyncChangeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequestreason) { // jshint ignore:line
         await resolveChangeQuality(2000); // jshint ignore:line
-        logger.debug('#######33another teste########33');
+        logger.debug('#######33another teste########3');
         //changeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequestreason); // jshint ignore:line
     } // jshint ignore:line
 
