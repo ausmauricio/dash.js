@@ -381,8 +381,9 @@ function AbrController() {
                         //changeCounter =  changeCounter - 1;
                         //settings.get().streaming.stableBufferTime;
                         var newStableBuffer = bitratesToBuffer[newQuality];
+                        logger.debug('---time +++' );
 
-                        if (newQuality > oldQuality && !accessFlag) {
+                        if (newQuality > oldQuality && !accessFlag && videoModel.getTime() > 10) {
                             newStableBuffer = bitratesToBuffer[newQuality];
                             settings.update({streaming: {stableBufferTime: newStableBuffer}});
                             accessFlag = true;
