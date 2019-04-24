@@ -45,6 +45,7 @@ import ThroughputHistory from '../rules/ThroughputHistory';
 import {HTTPRequest} from '../vo/metrics/HTTPRequest';
 import Debug from '../../core/Debug';
 import { checkInteger } from '../utils/SupervisorTools';
+import { access } from 'fs'; /* jshint ignore:line */
 //import ScheduleController from './ScheduleController';
 
 const ABANDON_LOAD = 'abandonload';
@@ -82,7 +83,7 @@ function AbrController() {
         isUsingBufferOccupancyABRDict,
         dashMetrics,
         settings;
-
+    let accessFlag = false;
     //let changeCounter = 3;
 
     function setup() {
@@ -323,6 +324,7 @@ function AbrController() {
         await resolveChangeQuality(2000);
         logger.debug('####### another test ########');
         changeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequestreason);
+        accessFlag = false;
     }
 
     function checkPlaybackQuality(type) {
@@ -358,7 +360,7 @@ function AbrController() {
                 }
 
                 switchHistoryDict[type].push({oldValue: oldQuality, newValue: newQuality});
-                let bitratesToBuffer = {0: 12, 1: 12, 2: 12, 3: 12, 4: 13, 5: 14, 6: 15, 7: 16, 8: 18};
+                let bitratesToBuffer = {0: 12, 1: 12, 2: 12, 3: 14, 4: 14, 5: 16, 6: 16, 7: 18, 8: 18};
 
                 if (newQuality > SwitchRequest.NO_CHANGE && newQuality != oldQuality) {
                     if (abandonmentStateDict[type].state === ALLOW_LOAD || newQuality > oldQuality) {
@@ -378,15 +380,18 @@ function AbrController() {
                         //}
                         //changeCounter =  changeCounter - 1;
                         //settings.get().streaming.stableBufferTime;
+                        var newStableBuffer = bitratesToBuffer[newQuality];
 
-                        if (newQuality > oldQuality) {
-                            var newStableBuffer = bitratesToBuffer[newQuality];
+                        if (newQuality > oldQuality && !accessFlag) {
+                            newStableBuffer = bitratesToBuffer[newQuality];
                             settings.update({streaming: {stableBufferTime: newStableBuffer}});
-
+                            accessFlag = true;
                             asyncChangeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequest.reason);
                             logger.debug('########## ASYNC CHANGE QUALITY EXECUTED ###########');
 
                         } else {
+                            newStableBuffer = bitratesToBuffer[newQuality];
+                            settings.update({streaming: {stableBufferTime: newStableBuffer}});
                             changeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequest.reason);
                         }
                     }
