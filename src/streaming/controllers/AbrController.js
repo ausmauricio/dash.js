@@ -320,12 +320,12 @@ function AbrController() {
         return new Promise(r => setTimeout(r, milisecs));
     }
 
-    async function asyncChangeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequestreason) {
-        await resolveChangeQuality(2000);
-        logger.debug('####### another test ########');
-        changeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequestreason);
-        accessFlag = false;
-    }
+    //async function asyncChangeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequestreason) {
+    //    await resolveChangeQuality(2000);
+    //    logger.debug('####### another test ########');
+    //    changeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequestreason);
+    //    accessFlag = false;
+    //}
 
     function checkPlaybackQuality(type) {
         if (type  && streamProcessorDict && streamProcessorDict[type]) {
@@ -360,10 +360,12 @@ function AbrController() {
                 }
 
                 switchHistoryDict[type].push({oldValue: oldQuality, newValue: newQuality});
-                let bitratesToBuffer = {0: 12, 1: 12, 2: 12, 3: 14, 4: 14, 5: 16, 6: 16, 7: 18, 8: 18};
+                //let bitratesToBuffer = {0: 12, 1: 12, 2: 12, 3: 14, 4: 14, 5: 16, 6: 16, 7: 18, 8: 18};
 
                 if (newQuality > SwitchRequest.NO_CHANGE && newQuality != oldQuality) {
                     if (abandonmentStateDict[type].state === ALLOW_LOAD || newQuality > oldQuality) {
+                        changeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequest.reason);
+                    }
 
                         // maurice
                         //  should I make calls to schedule here?
@@ -380,22 +382,21 @@ function AbrController() {
                         //}
                         //changeCounter =  changeCounter - 1;
                         //settings.get().streaming.stableBufferTime;
-                        var newStableBuffer = bitratesToBuffer[newQuality];
-                        logger.debug('---time +++' + videoModel.getTime());
+                        //var newStableBuffer = bitratesToBuffer[newQuality];
+                        //logger.debug('---time +++' + videoModel.getTime());
 
-                        if (newQuality > oldQuality && !accessFlag && videoModel.getTime() > 10) {
-                            newStableBuffer = bitratesToBuffer[newQuality];
-                            settings.update({streaming: {stableBufferTime: newStableBuffer}});
-                            accessFlag = true;
-                            asyncChangeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequest.reason);
-                            logger.debug('########## ASYNC CHANGE QUALITY EXECUTED ###########');
+                        //if (newQuality > oldQuality && !accessFlag && videoModel.getTime() > 10) {
+                        //    newStableBuffer = bitratesToBuffer[newQuality];
+                        //   settings.update({streaming: {stableBufferTime: newStableBuffer}});
+                        //    accessFlag = true;
+                        //    asyncChangeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequest.reason);
+                        //    logger.debug('########## ASYNC CHANGE QUALITY EXECUTED ###########');
 
-                        } else {
-                            newStableBuffer = bitratesToBuffer[newQuality];
-                            settings.update({streaming: {stableBufferTime: newStableBuffer}});
-                            changeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequest.reason);
-                        }
-                    }
+                        //} else {
+                        //    newStableBuffer = bitratesToBuffer[newQuality];
+                        //   settings.update({streaming: {stableBufferTime: newStableBuffer}});
+                        //    changeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequest.reason);
+                        //}
                 } else if (settings.get().debug.logLevel === Debug.LOG_LEVEL_DEBUG) {
                     const bufferLevel = dashMetrics.getCurrentBufferLevel(type, true);
                     logger.debug('AbrController (' + type + ') stay on ' + oldQuality + '/' + topQualityIdx + ' (buffer: ' + bufferLevel + ')');
