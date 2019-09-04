@@ -252,6 +252,7 @@ function ScheduleController(config) {
 
             setFragmentProcessState(true);
             if (!isReplacement && !switchTrack) {
+                // ABR stuff start here
                 abrController.checkPlaybackQuality(type);
             }
 
