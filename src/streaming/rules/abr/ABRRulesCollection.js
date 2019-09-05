@@ -152,9 +152,9 @@ function ABRRulesCollection(config) {
     }
 
     function getMaxQuality(rulesContext) {
-        const switchRequestArray = qualitySwitchRules.map(rule => rule.getMaxIndex(rulesContext));
-        const activeRules = getActiveRules(switchRequestArray);
-        const maxQuality = getMinSwitchRequest(activeRules);
+        const switchRequestArray = qualitySwitchRules.map(rule => rule.getMaxIndex(rulesContext)); // max quality for bolarule, thr rule, and the other rules.
+        const activeRules = getActiveRules(switchRequestArray); // filter bola or thr rule
+        const maxQuality = getMinSwitchRequest(activeRules); // the insufficient buffer rule, switch hist rule.
 
         return maxQuality || SwitchRequest(context).create();
     }

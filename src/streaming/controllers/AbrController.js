@@ -350,7 +350,7 @@ function AbrController() {
             if (getAutoSwitchBitrateFor(type)) {
                 const minIdx = getMinAllowedIndexFor(type);
                 const topQualityIdx = getTopQualityIndexFor(type, streamId);
-                const switchRequest = abrRulesCollection.getMaxQuality(rulesContext);
+                const switchRequest = abrRulesCollection.getMaxQuality(rulesContext); // top item figure 15 fluxogram
                 let newQuality = switchRequest.quality;
                 if (minIdx !== undefined && newQuality < minIdx) {
                     newQuality = minIdx;
