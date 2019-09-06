@@ -82,7 +82,7 @@ function ThroughputHistory(config) {
     function pushFromNetwork() {
         // get value from controller :P
         let xhr = new XMLHttpRequest();
-        xhr.open("GET", "http://{}:6000/get_thr", true);
+        xhr.open('GET', 'http://{}:6000/get_thr', true);
         xhr.send(null);
         throughputFromNetworkDict.push(xhr.responseText);
     }
@@ -260,7 +260,7 @@ function ThroughputHistory(config) {
         ewmaThroughputDict = {};
         ewmaLatencyDict = {};
         // maurice
-        throughputFromNetworkDict = {}
+        throughputFromNetworkDict = {};
     }
 
     const instance = {

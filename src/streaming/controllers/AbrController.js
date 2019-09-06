@@ -83,8 +83,8 @@ function AbrController() {
         isUsingBufferOccupancyABRDict,
         dashMetrics,
         settings;
-    let accessFlag = false;
-    //let changeCounter = 3;
+    //let accessFlag = false;
+    //let changeCounter = 3; lol
 
     function setup() {
         logger = debug.getLogger(instance);
@@ -317,10 +317,11 @@ function AbrController() {
     function getAutoSwitchBitrateFor(type) {
         return !!settings.get().streaming.abr.autoSwitchBitrate[type];
     }
+    //maurice commented
 
-    function resolveChangeQuality(milisecs) {
-        return new Promise(r => setTimeout(r, milisecs));
-    }
+    //function resolveChangeQuality(milisecs) {
+    //    return new Promise(r => setTimeout(r, milisecs));
+    //}
 
     //async function asyncChangeQuality(type, oldQuality, newQuality, topQualityIdx, switchRequestreason) {
     //    await resolveChangeQuality(2000);
