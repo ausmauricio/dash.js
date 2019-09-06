@@ -998,6 +998,16 @@ function MediaPlayer() {
         return throughputHistory ? throughputHistory.getAverageThroughput(type) : 0;
     }
 
+    function getThroughput(type) {
+        const throughputHistory = abrController.getThroughputHistory();
+        return throughputHistory.getThroughput(type);
+    }
+
+    function getThroughputFromNetwork() {
+        const throughputHistory = abrController.getThroughputHistory();
+        return throughputHistory.getThroughputFromNetwork();
+    }
+
     /**
      * Sets whether withCredentials on XHR requests for a particular request
      * type is true or false
@@ -2093,6 +2103,10 @@ function MediaPlayer() {
         removeABRCustomRule: removeABRCustomRule,
         removeAllABRCustomRule: removeAllABRCustomRule,
         getAverageThroughput: getAverageThroughput,
+        // maurice
+        getThroughput: getThroughput,
+        getThroughputFromNetwork: getThroughputFromNetwork,
+        // end maurice
         retrieveManifest: retrieveManifest,
         addUTCTimingSource: addUTCTimingSource,
         removeUTCTimingSource: removeUTCTimingSource,

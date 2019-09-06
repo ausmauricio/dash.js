@@ -202,6 +202,8 @@ function AbrController() {
 
     function onMetricAdded(e) {
         if (e.metric === MetricsConstants.HTTP_REQUEST && e.value && e.value.type === HTTPRequest.MEDIA_SEGMENT_TYPE && (e.mediaType === Constants.AUDIO || e.mediaType === Constants.VIDEO)) {
+            // maurice
+            throughputHistory.pushFromNetwork();
             throughputHistory.push(e.mediaType, e.value, settings.get().streaming.abr.useDeadTimeLatency);
         }
 

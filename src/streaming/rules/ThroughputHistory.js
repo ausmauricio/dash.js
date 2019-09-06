@@ -58,7 +58,9 @@ function ThroughputHistory(config) {
         latencyDict,
         ewmaThroughputDict,
         ewmaLatencyDict,
-        ewmaHalfLife;
+        ewmaHalfLife,
+        // maurice
+        throughputFromNetworkDict;
 
     function setup() {
         ewmaHalfLife = {
@@ -75,6 +77,14 @@ function ThroughputHistory(config) {
         } else if (mediaType === Constants.AUDIO) {
             return downloadTimeMs < settings.get().streaming.cacheLoadThresholds[Constants.AUDIO];
         }
+    }
+    // maurice
+    function pushFromNetwork() {
+        // get value from controller :P
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", "http://{}:6000/get_thr", true);
+        xhr.send(null);
+        throughputFromNetworkDict.push(xhr.responseText);
     }
 
     function push(mediaType, httpRequest, useDeadTimeLatency) {
@@ -110,7 +120,6 @@ function ThroughputHistory(config) {
             // if we are here then we have some entries already, but they are cached, and now we have a new uncached entry
             clearSettingsForMediaType(mediaType);
         }
-
         throughputDict[mediaType].push(throughput);
         if (throughputDict[mediaType].length > MAX_MEASUREMENTS_TO_KEEP) {
             throughputDict[mediaType].shift();
@@ -206,6 +215,14 @@ function ThroughputHistory(config) {
         return isThroughput ? Math.min(fastEstimate, slowEstimate) : Math.max(fastEstimate, slowEstimate);
     }
 
+    function getThroughputFromNetwork() {
+        return throughputFromNetworkDict;
+    }
+
+    function getThroughput(mediaType) {
+        return throughputDict[mediaType];
+    }
+
     function getAverageThroughput(mediaType, isDynamic) {
         return getAverage(true, mediaType, isDynamic);
     }
@@ -242,6 +259,8 @@ function ThroughputHistory(config) {
         latencyDict = {};
         ewmaThroughputDict = {};
         ewmaLatencyDict = {};
+        // maurice
+        throughputFromNetworkDict = {}
     }
 
     const instance = {
@@ -249,7 +268,11 @@ function ThroughputHistory(config) {
         getAverageThroughput: getAverageThroughput,
         getSafeAverageThroughput: getSafeAverageThroughput,
         getAverageLatency: getAverageLatency,
-        reset: reset
+        reset: reset,
+        // maurice
+        pushFromNetwork: pushFromNetwork,
+        getThroughputFromNetwork: getThroughputFromNetwork,
+        getThroughput: getThroughput
     };
 
     setup();
