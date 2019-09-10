@@ -1000,12 +1000,23 @@ function MediaPlayer() {
 
     function getThroughput(type) {
         const throughputHistory = abrController.getThroughputHistory();
-        return throughputHistory.getThroughput(type);
+        var thr = throughputHistory.getThroughput(type);
+        var thr_string = '';
+        for(var i = 0; i < thr.length; i++) {
+            thr_string += thr[i] + ', ';
+        }
+        return thr_string;
     }
 
     function getThroughputFromNetwork() {
         const throughputHistory = abrController.getThroughputHistory();
-        return throughputHistory.getThroughputFromNetwork();
+        var thr = throughputHistory.getThroughputFromNetwork();
+        var thr_string = '';
+        for (var i = 0; i < thr.length; i++) {
+            if (thr[i].response) {
+                thr_string += thr[i].response + ', ';
+            }
+        }
     }
 
     /**
