@@ -1002,7 +1002,7 @@ function MediaPlayer() {
         const throughputHistory = abrController.getThroughputHistory();
         var thr = throughputHistory.getThroughput(type);
         var thr_string = '';
-        for(var i = 0; i < thr.length; i++) {
+        for (var i = 0; i < thr.length; i++) {
             thr_string += thr[i] + ', ';
         }
         return thr_string;
