@@ -1017,6 +1017,7 @@ function MediaPlayer() {
                 thr_string += thr[i].response + ', ';
             }
         }
+        return thr_string;
     }
 
     /**
