@@ -81,12 +81,12 @@ function ThroughputHistory(config) {
     // maurice
     function pushFromNetwork() {
         // get value from controller :P
-        let xhr = new XMLHttpRequest();?
+        let xhr = new XMLHttpRequest();
         xhr.open('GET', 'http://10.10.10.1:5005/get_thr', true);
         xhr.send(null);
-        throughputFromNetworkDict.push(xhr);
-        if (throughputFromNetworkDict['video'].length > MAX_MEASUREMENTS_TO_KEEP) {
-            throughputFromNetworkDict['video'].shift();
+        throughputFromNetworkDict.video.push(xhr);
+        if (throughputFromNetworkDict.video.length > MAX_MEASUREMENTS_TO_KEEP) {
+            throughputFromNetworkDict.video.shift();
         }
     }
 
@@ -219,7 +219,7 @@ function ThroughputHistory(config) {
     }
 
     function getThroughputFromNetwork() {
-        return throughputFromNetworkDict['video'];
+        return throughputFromNetworkDict.video;
     }
 
     function getThroughput(mediaType) {
@@ -264,7 +264,7 @@ function ThroughputHistory(config) {
         ewmaLatencyDict = {};
         // maurice
         throughputFromNetworkDict = {};
-        throughputFromNetworkDict['video'] = [];
+        throughputFromNetworkDict.video = [];
     }
 
     const instance = {
